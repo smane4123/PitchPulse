@@ -1865,21 +1865,21 @@ body {
 
 /* Updated button styling (account and logout) */
 .btn-account,
-.btn-logout {
-    padding: 16px 36px; /* larger buttons */
-    border-radius: 16px;
-    border: none;
-    font-weight: 700;
-    font-size: 1.2rem;
-    cursor: pointer;
+.btn-logout,
+.btn-change-password {
+    background: linear-gradient(135deg, var(--primary-color, #ff5722), var(--accent-color, #ff784e));
     color: #fff;
-    background: var(--primary-color, #ff5722); /* orange background */
-    box-shadow: 0 6px 18px rgba(255, 87, 34, 0.18);
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    padding: 14px 32px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(255, 87, 34, 0.2);
     transition: all 0.3s ease;
-    text-align: center;
     display: inline-block;
+    text-align: center;
 }
-
 /* Hover effect */
 .btn-account:hover,
 .btn-logout:hover {
