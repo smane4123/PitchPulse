@@ -1,39 +1,43 @@
 // src/components/TurfCard.js
+
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaMapMarkerAlt } from 'react-icons/fa'; // Optional: for better UI
 
 const TurfCard = ({ turf }) => {
+  // --- THIS IS THE CORRECTED LOGIC ---
+  // 1. Check if the 'images' array exists and has at least one image path.
+  // 2. Construct the full URL to the image on your backend server.
+  const imageUrl = turf.images && turf.images.length > 0
+    // The .replace() part fixes potential path issues if you are on Windows
+    ? `http://localhost:5000${turf.images[0]}`.replace(/\\/g, '/')
+    // A reliable placeholder if no image was uploaded
+    : 'https://via.placeholder.com/400x220.png?text=PitchPulse';
+
   return (
-    <div
-      className="turf-card"
-      data-aos="fade-up"
-      data-aos-delay={`${Math.floor(Math.random() * 200)}`} // small stagger effect
-    >
+    // The entire card is a link to the details page for better user experience
+    <Link to={`/turf/${turf._id}`} className="turf-card">
       <img
-        src={turf.image || '/images/default-turf.jpg'}
+        src={imageUrl}
         alt={turf.name || 'Turf'}
         className="turf-card-image"
       />
 
       <div className="turf-card-content">
         <h3>{turf.name || 'Unnamed Turf'}</h3>
-        <p>
-          {turf.address
-            ? turf.address
-            : turf.location?.coordinates
-            ? turf.location.coordinates.join(', ')
-            : 'No location data'}
-        </p>
-        <p className="turf-price">
-          {turf.price ? `₹${turf.price} / hr` : 'Price not available'}
+        
+        <p style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <FaMapMarkerAlt style={{ color: 'var(--primary-color)', flexShrink: 0 }} />
+          {turf.address || 'No location data'}
         </p>
 
-        {/* ✅ Fixed the route ID from turf.id → turf._id */}
-        <Link to={`/turf/${turf._id}`} className="btn-details">
-          View Details
-        </Link>
+        {/* Corrected to use 'pricePerHour' which matches your database model */}
+        <p className="turf-price">
+          {turf.pricePerHour ? `₹${turf.pricePerHour} / hr` : 'Price not available'}
+        </p>
+
       </div>
-    </div>
+    </Link>
   );
 };
 

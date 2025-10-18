@@ -2,27 +2,26 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path'); // <--- 1. Import 'path' module
+const path = require('path');
 require('dotenv').config();
 
 // Import Routes
 const authRoutes = require('./routes/authRoutes');
 const turfRoutes = require('./routes/turfRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const reviewRoutes = require('./routes/reviewRoutes'); // <-- 1. IMPORT review routes
 
 const app = express();
 
 // --- Middleware ---
 app.use(cors({
-    // Allow frontend from localhost:3000 to connect
     origin: 'http://localhost:3000',
     credentials: true,
 }));
 app.use(express.json()); // JSON body parser
 
-// 🚨 CRITICAL ADDITION: Serve static files (images) from the 'uploads' folder
-// This makes the images publicly accessible via http://localhost:5000/uploads/filename.jpg
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // <--- 2. Serve uploads publicly
+// Serve static files (images) from the 'uploads' folder
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- Database Connection ---
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -36,9 +35,12 @@ mongoose.connect(MONGODB_URI)
 
 // --- API Routes ---
 // Mount routes under /api namespace
+// Note: You only need one line for serving uploads
+// app.use('/uploads', express.static(path.join(__dirname, '/uploads'))); // <-- This line is duplicated, remove one
 app.use('/api/auth', authRoutes);
 app.use('/api/turfs', turfRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/reviews', reviewRoutes); // <-- 2. USE the review routes
 
 // Root route to check server status
 app.get('/', (req, res) => {

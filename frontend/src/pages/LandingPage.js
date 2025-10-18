@@ -142,20 +142,6 @@ const LandingPage = () => {
                     </div>
                 </div>
                 
-                <div className="features">
-                    <div className="feature">
-                        <div className="feature-icon">⚡</div>
-                        <div className="feature-text">Instant Booking</div>
-                    </div>
-                    <div className="feature">
-                        <div className="feature-icon">📍</div>
-                        <div className="feature-text">Prime Locations</div>
-                    </div>
-                    <div className="feature">
-                        <div className="feature-icon">💎</div>
-                        <div className="feature-text">Premium Quality</div>
-                    </div>
-                </div>
             </div>
         </>
     );

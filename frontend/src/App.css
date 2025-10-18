@@ -123,6 +123,12 @@ body {
   50% { border-color: var(--primary-color); }
 }
 
+.element-class {
+  border-right: 2px solid var(--primary-color);
+  animation: blinkCursor 1s step-end infinite;
+}
+
+
 /* ===== ENHANCED HERO SECTION ===== */
 .hero {
   position: relative;
@@ -1915,4 +1921,49 @@ body {
         font-size: 1.1rem;
         padding: 14px 0;
     }
+}
+.footer {
+  background-color: #333; /* Example dark background */
+  color: #ccc; /* Light text */
+  padding: 1.5rem 1rem;
+  margin-top: auto; /* Pushes footer to bottom */
+  text-align: center;
+}
+
+/* You might already have a .container style, adjust if needed */
+.footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.footer-link {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.footer-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Ensure app container allows footer push */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
 }
