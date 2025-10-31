@@ -5,7 +5,6 @@ import { FaStar, FaSpinner } from 'react-icons/fa';
 import '../App.css'; // Assuming App.css contains base styles
 
 // --- Background Component ---
-// (Copied from UserAccountPage, ensures consistent background)
 const PageWithAnimatedBackground = ({ children }) => {
     useEffect(() => {
         const handleParallax = (e) => {
@@ -23,8 +22,13 @@ const PageWithAnimatedBackground = ({ children }) => {
 
     return (
         <>
-            {/* Styles are self-contained within this component */}
             <style>{`
+                /* Override any global or layout grey backgrounds */
+                body, .app-container, .main-content {
+                    background: none !important;
+                    background-color: transparent !important;
+                }
+
                 body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
                 .page-wrapper-with-bg { position: relative; min-height: 100vh; padding: 4rem 1rem; box-sizing: border-box; display: flex; align-items: center; justify-content: center; overflow: hidden; }
                 .fixed-background-layers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
@@ -41,9 +45,9 @@ const PageWithAnimatedBackground = ({ children }) => {
                 .ball:nth-child(1) { top: 15%; left: 10%; } .ball:nth-child(2) { top: 70%; right: 15%; animation-delay: 2s; } .ball:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 4s; }
                 .sports-emoji { font-size: 3rem; opacity: 0.15; animation: float 8s ease-in-out infinite; filter: grayscale(20%); }
                 .sports-emoji:nth-child(4) { top: 10%; right: 8%; animation-delay: 1s; } .sports-emoji:nth-child(5) { top: 50%; left: 5%; animation-delay: 3s; } .sports-emoji:nth-child(6) { bottom: 15%; right: 10%; animation-delay: 5s; } .sports-emoji:nth-child(7) { top: 30%; right: 20%; animation-delay: 2s; } .sports-emoji:nth-child(8) { bottom: 35%; left: 12%; animation-delay: 4s; }
-                .content-area { position: relative; z-index: 10; width: 100%; max-width: 600px; /* Max width for form */ margin: 0 auto; }
-                 /* Generic Card Style */
-                 .form-card, .account-card, .details-card { /* Apply consistent card style */
+                .content-area { position: relative; z-index: 10; width: 100%; max-width: 800px; margin: 0 auto; }
+                 
+                 .form-card {
                     background-color: rgba(255, 255, 255, 0.95);
                     backdrop-filter: blur(10px);
                     border-radius: 16px;
@@ -51,14 +55,14 @@ const PageWithAnimatedBackground = ({ children }) => {
                     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
                     border: 1px solid rgba(255, 255, 255, 0.18);
                     width: 100%;
-                    text-align: left; /* Default alignment */
+                    text-align: left;
                 }
                 .form-card h2 { text-align: center; margin-bottom: 2rem; color: #333; }
                 .form-group { margin-bottom: 1.5rem; }
                 .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #555; }
                 .star-rating-container { display: flex; gap: 5px; margin-bottom: 1rem; }
                 .star-rating-container svg { cursor: pointer; transition: color 0.2s; }
-                textarea.form-control { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; resize: vertical; min-height: 100px; }
+                textarea.form-control { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; resize: vertical; min-height: 100px; box-sizing: border-box; }
                 .char-count { display: block; margin-top: 5px; color: #888; font-size: 0.85em; text-align: right; }
                 .error-message { color: red; margin-bottom: 1rem; background-color: #fdd; padding: 10px; border-radius: 5px; border: 1px solid #fbb; font-size: 0.9rem; }
                 .btn-submit-review { width: 100%; padding: 12px; font-size: 1.1rem; background-color: #ff8c42; color: white; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; }
@@ -112,7 +116,9 @@ const StarRating = ({ rating, setRating }) => {
 const ReviewFormPage = () => {
     const { bookingId } = useParams();
     const navigate = useNavigate();
+    // --- THIS IS THE CORRECTED LINE ---
     const [rating, setRating] = useState(0);
+    // ----------------------------------
     const [comment, setComment] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');

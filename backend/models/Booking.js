@@ -1,5 +1,4 @@
 // PITCHPULSE/backend/models/Booking.js
-
 const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
@@ -28,15 +27,23 @@ const bookingSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true,
-        enum: ['Confirmed', 'Cancelled'],
-        default: 'Confirmed'
+        enum: ['Confirmed', 'Cancelled', 'Pending'], // Added Pending
+        default: 'Pending' // Default to Pending until payment
     },
-    // --- ADDED ---
     hasBeenReviewed: {
         type: Boolean,
         default: false
-    }
-    // -------------
+    },
+
+    // --- ADDED FOR RAZORPAY ---
+    paymentId: { type: String },
+    paymentStatus: { type: String, default: 'Pending' },
+    razorpayOrderId: { type: String },
+    razorpayPaymentId: { type: String },
+    razorpaySignature: { type: String },
+    payerEmail: { type: String } // Storing email from payment
+    // --------------------------
+
 }, {
     timestamps: true
 });

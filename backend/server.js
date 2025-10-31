@@ -9,7 +9,8 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 const turfRoutes = require('./routes/turfRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
-const reviewRoutes = require('./routes/reviewRoutes'); // <-- 1. IMPORT review routes
+const reviewRoutes = require('./routes/reviewRoutes');
+const paymentRoutes = require('./routes/paymentRoutes'); // <-- ADDED
 
 const app = express();
 
@@ -34,13 +35,11 @@ mongoose.connect(MONGODB_URI)
     });
 
 // --- API Routes ---
-// Mount routes under /api namespace
-// Note: You only need one line for serving uploads
-// app.use('/uploads', express.static(path.join(__dirname, '/uploads'))); // <-- This line is duplicated, remove one
 app.use('/api/auth', authRoutes);
 app.use('/api/turfs', turfRoutes);
 app.use('/api/bookings', bookingRoutes);
-app.use('/api/reviews', reviewRoutes); // <-- 2. USE the review routes
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/payment', paymentRoutes); // <-- ADDED
 
 // Root route to check server status
 app.get('/', (req, res) => {

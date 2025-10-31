@@ -16,9 +16,9 @@ import OwnerLoginPage from './pages/OwnerLoginPage';
 import AddTurfPage from './pages/AddTurfPage';
 import LandingPage from './pages/LandingPage';
 import BookingPage from './pages/BookingPage';
-import ReviewFormPage from './pages/ReviewFormPage'; // <-- 1. IMPORT ReviewFormPage
+import PaymentPage from './pages/PaymentPage';
 
-// Helper function (Keep as is)
+// Helper function
 const isOwner = () => {
   try {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -33,14 +33,14 @@ const AppContent = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Re-check login status on route change
+    // Re-check login status on every route change
     setIsLoggedIn(!!localStorage.getItem('token'));
 
     AOS.init({
       duration: 1000,
       once: true,
     });
-  }, [location]); // Rerun this effect whenever the URL changes
+  }, [location]); // Dependency array ensures this runs on route change
 
   const handleLoginSuccess = () => setIsLoggedIn(true);
 
@@ -50,7 +50,7 @@ const AppContent = () => {
     setIsLoggedIn(false);
   };
 
-  // Determine if the Navbar and Footer should be shown
+  // Determine if Navbar and Footer should be shown
   const isLandingPageAndLoggedOut = location.pathname === '/' && !isLoggedIn;
   const showNavbarAndFooter = !isLandingPageAndLoggedOut;
 
@@ -60,28 +60,19 @@ const AppContent = () => {
       <main className="main-content">
         <Routes>
           {/* Landing/Home Logic */}
-          <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LandingPage />} />
-          <Route path="/home" element={isLoggedIn ? <HomePage /> : <Navigate to="/login" />} />
+          <Route path="/" element={isLoggedIn ? <Navigate to="/home" replace /> : <LandingPage />} />
+          <Route path="/home" element={isLoggedIn ? <HomePage /> : <Navigate to="/login" replace />} />
 
           {/* Public Routes */}
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} />
           <Route path="/owner-login" element={<OwnerLoginPage onLoginSuccess={handleLoginSuccess} />} />
           <Route path="/turf/:id" element={<TurfDetailsPage />} />
-          <Route path="/booking/:id" element={<BookingPage />} />
-
 
           {/* Protected Routes (for any logged-in user) */}
-          <Route path="/account" element={isLoggedIn ? <UserAccountPage onLogout={handleLogout} /> : <Navigate to="/login" />} />
-
-          {/* --- 2. ADDED: Protected route for the Review Form --- */}
-          <Route path="/review/:bookingId" element={
-            isLoggedIn
-              ? <ReviewFormPage />
-              : <Navigate to="/login" replace /> // Redirect to login if not logged in
-          } />
-          {/* --------------------------------------------------- */}
-
+          <Route path="/account" element={isLoggedIn ? <UserAccountPage onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+          <Route path="/book/:id" element={isLoggedIn ? <BookingPage /> : <Navigate to="/login" replace />} />
+          <Route path="/payment" element={isLoggedIn ? <PaymentPage /> : <Navigate to="/login" replace />} />
 
           {/* Protected Routes (for Owners only) */}
           <Route path="/addturf" element={
@@ -94,6 +85,10 @@ const AppContent = () => {
               ? <AddTurfPage />
               : <Navigate to="/owner-login" replace />
           } />
+
+          {/* Optional: Catch-all route for 404 Not Found */}
+          {/* <Route path="*" element={<NotFoundPage />} /> */}
+
         </Routes>
       </main>
       {showNavbarAndFooter && <Footer />}
